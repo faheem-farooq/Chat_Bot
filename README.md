@@ -28,12 +28,14 @@ Open:
 
 ## Deploy on Vercel
 
-This repo uses `vercel.json` because it has two services:
+Recommended: deploy the frontend to Vercel and the FastAPI backend to a separate service (Render, Railway, Fly, or a Docker host). Vercel works best when the project root is the Next.js app.
 
-- `frontend` at `/`
-- `backend` at `/_/backend`
+Options:
 
-In Vercel, add these environment variables:
+- Fast: Set the Vercel Project Root to `frontend` (Project Settings → General → Root Directory) and let Vercel detect the Next.js app. No `vercel.json` change required.
+- Alternative (monorepo routing): this repo includes a simple `vercel.json` that builds the `frontend` folder directly. If you prefer this, keep the repo-level `vercel.json`.
+
+Environment variables you will need on Vercel or your backend host:
 
 ```bash
 GROQ_API_KEY=your_groq_key
@@ -42,9 +44,10 @@ DATABASE_URL=postgresql+psycopg://user:password@host:5432/database
 CORS_ORIGIN=https://your-vercel-domain.vercel.app
 ```
 
-For production, use a hosted PostgreSQL database such as Neon, Supabase, or Vercel Postgres. The local SQLite fallback is only for learning and local development.
+Notes:
 
-Leave `NEXT_PUBLIC_API_URL` empty on Vercel unless your backend is deployed somewhere else. The frontend will call `/_/backend` automatically.
+- The backend should be reachable from the frontend via `NEXT_PUBLIC_API_URL` if it is deployed to another host. Example: `NEXT_PUBLIC_API_URL=https://my-backend.example.com`.
+- For production use a hosted PostgreSQL (Neon/Supabase/Vercel Postgres). The local SQLite fallback is only for learning.
 
 ## Run locally
 
